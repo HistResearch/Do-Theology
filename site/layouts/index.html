@@ -1,13 +1,23 @@
 {{ define "main" }}
 
-{{ partial "jumbotron" (dict "imageUrl" .Params.image "title" .Title "subtitle" .Params.subtitle) }}
+<main style="max-width: 860px; margin: 64px auto; padding: 0 24px; font-family: sans-serif; line-height: 1.75;">
 
-{{ partial "short-text" .Params.blurb}}
+  <h1> Word & Life</h1>
 
-{{ partial "2-up" .Params }}
+  <p>有些东西，需要慢慢品。</p>
+  <p>信仰不是速溶的。真理也不是拿来快速消费的。</p>
 
-{{ partial "text-and-image" (dict "heading" .Params.values.heading "text" .Params.values.text "buttonText" "Read more" "buttonLink" "/values") }}
+  <hr>
 
-{{ partial "blog" . }}
+  <h2>📚 课程</h2>
+  <p>教会史、系统神学、门徒训练等课程讲义。</p>
+
+  <h2>✝️ 讲章</h2>
+  <p>创世记等圣经讲道系列。</p>
+
+  <h2>📖 读书</h2>
+  <p>《魔鬼家书》及其他神学经典阅读。</p>
+
+</main>
 
 {{ end }}
