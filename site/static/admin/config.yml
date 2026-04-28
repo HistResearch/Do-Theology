@@ -2,105 +2,67 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "site/static/img" # Folder where user uploaded files should go
-public_folder: "img"
+media_folder: "static/images/uploads"
+public_folder: "/images/uploads"
 
-collections: # A list of collections the CMS should be able to edit
-  - name: "post" # Used in routes, ie.: /admin/collections/:slug/edit
-    label: "Post" # Used in the UI, ie.: "New Post"
-    folder: "site/content/post" # The path to the folder where the documents are stored
-    path: "{{slug}}/index" # Each document is inside a folder with the slug name.
-    create: true # Allow users to create new documents in this collection
-    fields: # The fields each document in this collection have
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Publish Date", name: "date", widget: "datetime"}
-      - {label: "Intro Blurb", name: "description", widget: "text"}
-      - {label: "Image", name: "image", widget: "image", required: false}
-      - {label: "Body", name: "body", widget: "markdown"}
+locale: "zh_Hans"
+
+collections:
+  - name: "courses"
+    label: "课程 Courses"
+    folder: "content/courses"
+    create: true
+    slug: "{{slug}}"
+    path: "{{course}}/{{slug}}"
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "课程系列", name: "course", widget: "select", options: ["church-history", "systematic-theology", "discipleship"], default: "church-history" }
+      - { label: "课程序号", name: "weight", widget: "number", default: 1 }
+      - { label: "简介", name: "description", widget: "text", required: false }
+      - { label: "草稿", name: "draft", widget: "boolean", default: false }
+      - { label: "正文", name: "body", widget: "markdown", default: "# 🎯 课程目标\n\n# 📖 核心内容\n\n# 🧠 重点总结\n\n# 💬 讨论问题\n\n# 🛠 作业\n" }
+
+  - name: "sermons"
+    label: "讲章 Sermons"
+    folder: "content/sermons"
+    create: true
+    slug: "{{slug}}"
+    path: "{{series}}/{{slug}}"
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "讲章系列", name: "series", widget: "select", options: ["genesis", "romans", "john"], default: "genesis" }
+      - { label: "经文", name: "scripture", widget: "string", required: false }
+      - { label: "日期", name: "date", widget: "datetime", required: false }
+      - { label: "排序", name: "weight", widget: "number", default: 1 }
+      - { label: "草稿", name: "draft", widget: "boolean", default: false }
+      - { label: "正文", name: "body", widget: "markdown", default: "# 📖 经文\n\n# 🎯 讲道主题\n\n# 🧠 经文讲解\n\n# 🔥 生命应用\n\n# 🙏 祷告回应\n" }
+
+  - name: "reading"
+    label: "读书 Reading"
+    folder: "content/reading"
+    create: true
+    slug: "{{slug}}"
+    path: "{{book}}/{{slug}}"
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "书籍/系列", name: "book", widget: "select", options: ["screwtape-letters", "augustine", "calvin"], default: "screwtape-letters" }
+      - { label: "章节/编号", name: "weight", widget: "number", default: 1 }
+      - { label: "草稿", name: "draft", widget: "boolean", default: false }
+      - { label: "正文", name: "body", widget: "markdown", default: "# 📜 内容摘要\n\n# 🧠 主题分析\n\n# 🎯 神学意义\n\n# 💡 今日应用\n" }
+
   - name: "pages"
-    label: "Pages"
+    label: "页面 Pages"
     files:
-      - file: "site/content/_index.md"
-        label: "Home Page"
+      - label: "首页"
         name: "home"
+        file: "content/_index.md"
         fields:
-          - {label: Title, name: title, widget: string}
-          - {label: Subtitle, name: subtitle, widget: string}
-          - {label: Image, name: image, widget: image}
-          - {label: "Blurb", name: blurb, widget: object, fields: [
-              {label: "Heading", name: "heading", widget: string},
-              {label: "Text", name: "text", widget: "text"}]}
-          - {label: "Intro", name: intro, widget: object, fields: [
-              {label: "Heading", name: "heading", widget: string},
-              {label: "Text", name: "text", widget: "text"}]}
-          - {label: "Products", name: products, widget: list, fields: [
-              {label: "Image", name: "image", widget: "image"},
-              {label: "Text", name: "text", widget: "text"}]}
-          - {label: "Values", name: "values", widget: "object", fields: [
-              {label: "Heading", name: "heading", widget: string},
-              {label: "Text", name: "text", widget: "text"}]}
-      - file: "site/content/contact/_index.md"
-        label: "Contact Page"
-        name: "contact"
+          - { label: "标题", name: "title", widget: "string", default: "Theology Lab" }
+          - { label: "正文", name: "body", widget: "markdown" }
+
+      - label: "关于"
+        name: "about"
+        file: "content/about.md"
         fields:
-          - {label: Title, name: title, widget: string}
-          - {label: Logo, name: logo, widget: image}
-          - {label: Body, name: body, widget: markdown}
-          - label: Contact Entries
-            name: contact_entries
-            widget: list
-            fields:
-              - label: Heading
-                name: heading
-                widget: string
-              - label: Text
-                name: text
-                widget: text
-      - file: "site/content/products/_index.md"
-        label: "Products Page"
-        name: "products"
-        fields:
-          - {label: Title, name: title, widget: string}
-          - {label: Image, name: image, widget: image}
-          - {label: Intro, name: intro, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: text}, {label: Blurbs, name: blurbs, widget: list, fields: [{label: Image, name: image, widget: image}, {label: Text, name: text, widget: text}]}]}
-          - {label: Main, name: main, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: text}, {label: Image1, name: image1, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Alt, name: alt, widget: string}]}, {label: Image2, name: image2, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Alt, name: alt, widget: string}]}, {label: Image3, name: image3, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Alt, name: alt, widget: string}]}]}
-          - {label: Testimonials, name: testimonials, widget: list, fields: [{label: Quote, name: quote, widget: string}, {label: Author, name: author, widget: string}]}
-          - {label: Full_image, name: full_image, widget: image}
-          - {label: Pricing, name: pricing, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: string}, {label: Plans, name: plans, widget: list, fields: [{label: Plan, name: plan, widget: string}, {label: Price, name: price, widget: string}, {label: Description, name: description, widget: string}, {label: Items, name: items, widget: list}]}]}
-      - file: "site/content/values/_index.md"
-        label: "Values Page"
-        name: "values"
-        fields:
-          - {label: Title, name: title, widget: string}
-          - {label: Image, name: image, widget: image}
-          - label: Values
-            name: values
-            widget: list
-            fields:
-              - {label: Heading, name: heading, widget: string}
-              - {label: Text, name: text, widget: text}
-              - {label: Image, name: imageUrl, widget: image}
-  - name: "site_settings"
-    label: "Site Settings"
-    files:
-      - file: "site/data/footer.json"
-        label: Footer
-        name: footer
-        fields:
-          - {label: Title, name: title, widget: string}
-          - {label: Blurb, name: blurb, widget: text}
-      - file: "site/hugo.toml"
-        label: Hugo Config
-        name: config
-        editor:
-          preview: false
-        fields:
-          - {label: Site Title for Browser Tab, name: title, widget: string}
-          - label: Params
-            name: params
-            widget: object
-            fields:
-              - label: Open Graph Image
-                name: images
-                widget: list
-                field: { label: Image, name: image, widget: image }
+          - { label: "标题", name: "title", widget: "string", default: "关于 Theology Lab" }
+          - { label: "正文", name: "body", widget: "markdown" }
