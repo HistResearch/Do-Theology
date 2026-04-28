@@ -1,4 +1,18 @@
 {
-    "title": "Newsletter subscribe",
-    "blurb": "Get awesome news from us in your inbox every two weeks. Be the first to learn about new products."
+  "title": "Word & Life",
+  "newsletter": {
+    "heading": "Stay in touch",
+    "text": "Updates on new materials and writings."
+  },
+  "sections": [
+    {
+      "heading": "Explore",
+      "links": [
+        { "text": "Home", "url": "/" },
+        { "text": "Courses", "url": "/courses/" },
+        { "text": "Sermons", "url": "/sermons/" },
+        { "text": "Reading", "url": "/reading/" }
+      ]
+    }
+  ]
 }
